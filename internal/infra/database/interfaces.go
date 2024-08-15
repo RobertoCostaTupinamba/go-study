@@ -8,3 +8,12 @@ type UserInterface interface {
 	GetUserByEmail(email string) (*entity.User, error)
 	GetUserById(id string) (*entity.User, error)
 }
+
+// ProductInterface is an interface that defines the methods that a ProductDatabase should implement
+type ProductInterface interface {
+	CreateProduct(product *entity.Product) error
+	FindAll(offset, limit int, sort string) ([]entity.Product, error)
+	FindById(id string) (*entity.Product, error)
+	UpdateProduct(product *entity.Product) error
+	DeleteProduct(id string) error
+}
