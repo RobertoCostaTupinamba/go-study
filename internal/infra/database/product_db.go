@@ -25,7 +25,7 @@ func (p *ProductDatabase) CreateProduct(product *entity.Product) error {
 // FindById returns a product by its id
 func (p *ProductDatabase) FindById(id string) (*entity.Product, error) {
 	var product entity.Product
-	err := p.DB.First(&product, id).Error
+	err := p.DB.First(&product, "id = ?", id).Error
 	return &product, err
 }
 
@@ -46,19 +46,22 @@ func (p *ProductDatabase) DeleteProduct(id string) error {
 	if err != nil {
 		return err
 	}
-	return p.DB.Delete(&entity.Product{}, id).Error
+	return p.DB.Delete(&entity.Product{}, "id = ?", id).Error
 }
 
-// FindAll returns all products with support for multiple sort fields
-func (p *ProductDatabase) FindAll(offset, limit int, sort string) ([]entity.Product, error) {
-	// Validate offset: ensure it is non-negative
-	if offset < 0 {
-		offset = 0
+// FindAll returns all products with support for multiple sort fields and pagination by page
+func (p *ProductDatabase) FindAll(page, limit int, sort string) ([]entity.Product, error) {
+	// Validate page: ensure it is non-negative and start from 1
+	if page < 1 {
+		page = 1
 	}
 	// Validate limit: ensure it is non-negative
-	if limit < 0 {
-		limit = 0
+	if limit < 1 {
+		limit = 10 // Default limit if not provided or invalid
 	}
+
+	// Calculate offset based on page and limit
+	offset := (page - 1) * limit
 
 	// Define valid sort fields
 	validSorts := map[string]string{

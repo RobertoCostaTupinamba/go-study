@@ -12,7 +12,7 @@ type UserInterface interface {
 // ProductInterface is an interface that defines the methods that a ProductDatabase should implement
 type ProductInterface interface {
 	CreateProduct(product *entity.Product) error
-	FindAll(offset, limit int, sort string) ([]entity.Product, error)
+	FindAll(page, limit int, sort string) ([]entity.Product, error)
 	FindById(id string) (*entity.Product, error)
 	UpdateProduct(product *entity.Product) error
 	DeleteProduct(id string) error
