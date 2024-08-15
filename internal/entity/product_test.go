@@ -29,7 +29,7 @@ func TestProduct_Validate_ZeroPrice(t *testing.T) {
 	product, err := NewProduct("Product 1", 0)
 	assert.NotNil(t, err)
 	assert.Nil(t, product)
-	assert.Equal(t, ErrorPriceInvalid, err)
+	assert.Equal(t, ErrorPriceRequired, err)
 }
 
 // Test when the product price is negative
