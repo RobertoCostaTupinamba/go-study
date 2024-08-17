@@ -7,6 +7,8 @@ import (
 	"github.com/RobertoCostaTupinamba/go-study/internal/entity"
 	"github.com/RobertoCostaTupinamba/go-study/internal/infra/database"
 	"github.com/RobertoCostaTupinamba/go-study/internal/infra/webserver/handlers"
+	"github.com/go-chi/chi/v5"
+	"github.com/go-chi/chi/v5/middleware"
 	"gorm.io/driver/sqlite"
 	"gorm.io/gorm"
 )
@@ -31,8 +33,15 @@ func main() {
 	// Create a new ProductHandler instance
 	productHandler := handlers.NewProductHandler(productDB)
 
+	// Create a new router
+	r := chi.NewRouter()
+	// Use the logger middleware
+	r.Use(middleware.Logger)
 	// Register the handler function
-	http.HandleFunc("/products", productHandler.CreateProduct)
+	r.Post("/products", productHandler.CreateProduct)
+	r.Get("/products/{id}", productHandler.GetProduct)
+	r.Put("/products/{id}", productHandler.UpdateProduct)
+
 	// Start the HTTP server
-	http.ListenAndServe(":8000", nil)
+	http.ListenAndServe(":8000", r)
 }
