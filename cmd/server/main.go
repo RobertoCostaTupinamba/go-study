@@ -15,7 +15,7 @@ import (
 
 func main() {
 	// Load the application configuration
-	_, err := configs.LoadConfig(".")
+	configs, err := configs.LoadConfig(".")
 	if err != nil {
 		panic(err)
 	}
@@ -33,6 +33,11 @@ func main() {
 	// Create a new ProductHandler instance
 	productHandler := handlers.NewProductHandler(productDB)
 
+	// Create a new UserDatabase instance
+	userDB := database.NewUserDatabase(db)
+	// Create a new UserHandler instance
+	userHandler := handlers.NewUserHandler(userDB, configs.TokenAuth, configs.JWTExpiresIn)
+
 	// Create a new router
 	r := chi.NewRouter()
 	// Use the logger middleware
@@ -43,6 +48,9 @@ func main() {
 	r.Get("/products/{id}", productHandler.GetProduct)
 	r.Put("/products/{id}", productHandler.UpdateProduct)
 	r.Delete("/products/{id}", productHandler.DeleteProduct)
+
+	r.Post("/users", userHandler.CreateUser)
+	r.Post("/users/token", userHandler.GetJwtToken)
 
 	// Start the HTTP server
 	http.ListenAndServe(":8000", r)
