@@ -2,22 +2,29 @@ POST http://localhost:8000/products HTTP/1.1
 Content-Type: application/json
 
 {
-  "name": "TESTE 2",
-  "price": 100
+  "name": "TESTE 3",
+  "price": 50
 }
 
 ###
 
-GET http://localhost:8000/products/fd8f8972-e4ac-4c44-81d9-431f9ad49286	 HTTP/1.1
+GET http://localhost:8000/products/52f4157e-a773-4807-bfee-a57cc729b2a1	 HTTP/1.1
 Content-Type: application/json
 
 ###
 
-PUT http://localhost:8000/products/fd8f8972-e4ac-4c44-81d9-431f9ad49286	 HTTP/1.1
+PUT http://localhost:8000/products/05798dd9-8049-49ea-aac5-8e627ffbc0ae	 HTTP/1.1
 Content-Type: application/json
 
 {
-  "name": "TESTE 5",
-  "price": 150
+  "price": 300
 }
 
+###
+
+DELETE http://localhost:8000/products/fd8f8972-e4ac-4c44-81d9-431f9ad49286	 HTTP/1.1
+
+
+###
+
+GET http://localhost:8000/products	 HTTP/1.1
